@@ -14,10 +14,10 @@ import java.util.Map;
 public class ResearchService {
 
     @Value("${gemini.api.url}")
-    private String genimiApiurl;
+    private String geminiApiUrl;
 
     @Value("${gemini.api.key}")
-    private String genimiApikey;
+    private String geminiApiKey;
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
@@ -55,8 +55,9 @@ public class ResearchService {
         try {
 
             String response = webClient.post()
-                    .uri(genimiApiurl + genimiApikey)
+                    .uri(geminiApiUrl)
                     .header("Content-Type", "application/json")
+                    .header("x-goog-api-key", geminiApiKey)
                     .bodyValue(requestbody)
                     .retrieve()
                     .bodyToMono(String.class)
@@ -76,23 +77,23 @@ public class ResearchService {
 
         try {
 
-            GeminiResponse geniniResponse =
+            GeminiResponse geminiResponse =
                     objectMapper.readValue(
                             response,
                             GeminiResponse.class
                     );
 
-            if (geniniResponse.getCandidates() != null
-                    && !geniniResponse.getCandidates().isEmpty()) {
+            if (geminiResponse.getCandidates() != null
+                    && !geminiResponse.getCandidates().isEmpty()) {
 
-                GeminiResponse.Candidate fristCondidate =
-                        geniniResponse.getCandidates().get(0);
+                GeminiResponse.Candidate firstCandidate =
+                        geminiResponse.getCandidates().get(0);
 
-                if (fristCondidate.getContent() != null
-                        && fristCondidate.getContent().getParts() != null
-                        && !fristCondidate.getContent().getParts().isEmpty()) {
+                if (firstCandidate.getContent() != null
+                        && firstCandidate.getContent().getParts() != null
+                        && !firstCandidate.getContent().getParts().isEmpty()) {
 
-                    return fristCondidate
+                    return firstCandidate
                             .getContent()
                             .getParts()
                             .get(0)
@@ -100,7 +101,7 @@ public class ResearchService {
                 }
             }
 
-            return "NO content found in Gemini response.";
+            return "No content found in Gemini response.";
 
         } catch (Exception e) {
 

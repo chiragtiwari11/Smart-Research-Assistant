@@ -39,7 +39,7 @@ async function summarizeText() {
         }
 
         const response = await fetch(
-            'http://localhost:8080/api/research/process',
+            'http://localhost:10000/api/research/process',
             {
                 method: 'POST',
 
@@ -99,3 +99,5 @@ function showResult(content) {
         </div>`;
 
 }
+
+
