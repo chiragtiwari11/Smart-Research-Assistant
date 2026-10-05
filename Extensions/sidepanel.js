@@ -39,7 +39,7 @@ async function summarizeText() {
         }
 
         const response = await fetch(
-            'http://localhost:10000/api/research/process',
+            'https://smart-research-assistant-8f37.onrender.com/api/research/process',
             {
                 method: 'POST',
 
